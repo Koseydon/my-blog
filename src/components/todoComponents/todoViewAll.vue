@@ -1,7 +1,8 @@
 <template>
   <v-content>
     <v-container>
-      <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12" src="../../images/logos/MoB-logo.png">
+      <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
+        src="http://localhost:3000/logos/MOB-logo.png">
       </v-img>
       <v-container>
         <v-row justify="center">
@@ -44,13 +45,12 @@
                 <span>sort by status</span>
               </v-tooltip>
               <v-spacer></v-spacer>
-              <Popup/>
             </v-layout>
-            <v-card @click="project.show = !project.show" flat v-for="project in newProjects" :key="project.title">
+            <v-card @click="project.show = !project.show" flat v-for="project in newProjects" :key="project.todoTitle">
               <v-layout wrap :class="`pa-3 project ${project.status}`">
                 <v-flex xs12 md6 xl6>
                   <div class="caption grey--text">Project Title</div>
-                  <div>{{ project.title }}</div>
+                  <div>{{ project.todoTitle }}</div>
                 </v-flex>
                 <v-flex xs12 sm4 md2 xl2>
                   <div class="caption grey--text">Person</div>
@@ -58,7 +58,7 @@
                 </v-flex>
                 <v-flex xs6 sm4 md2 xl2>
                   <div class="caption grey--text">Due by</div>
-                  <div>{{ project.due }}</div>
+                  <div>{{ project.newDate }}</div>
                 </v-flex>
                 <v-flex xs2 sm4 md2 xl1>
                   <div class="text-right">
@@ -67,14 +67,28 @@
                   </div>
                 </v-flex>
                 <v-flex class="d-flex flex-row-reverse" xs2 sm4 md2 xl1>
-                  <PopupDelete @postDelete="postDeleted = true" v-bind:inputId="project._id" />
-                  <PopupEdit @snackbarOn="snackbarEdited = true" v-bind:inputId="project._id" />
+                  <v-speed-dial direction="right">
+                    <template v-slot:activator>
+                      <v-btn fab text left small color="grey">
+                        <v-icon small>mdi-delete</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-btn v-on="on" fab dark small text color="blue">
+                      <v-icon>mdi-account-arrow-left</v-icon>
+                    </v-btn>
+                    <v-btn v-on="on" fab dark small text color="blue">
+                      <v-icon>mdi-account-arrow-left</v-icon>
+                    </v-btn>
+                  </v-speed-dial>
+                  <!-- <todoPopupDelete @postDelete="postDeleted = true" v-bind:inputId="project._id" /> -->
+                  <todoPopupEdit v-bind:inputId="project._id" />
                 </v-flex>
               </v-layout>
               <v-divider></v-divider>
               <v-slide-y-transition>
                 <v-card-text v-show="project.show">
-                  <div class="text-lg-right"><b>DOB: </b>{{ project.title }}</div>
+                  <b>INFO: </b>
+                  <div class="text-lg-left">{{ project.todoTitle }}</div>
                 </v-card-text>
               </v-slide-y-transition>
             </v-card>
@@ -86,43 +100,35 @@
 </template>
 
 <script>
-  import PopupEdit from '../todoComponents/PopupEdit'
-  import PopupDelete from '../todoComponents/PopupDelete'
-  import Popup from '../todoComponents/Popup'
+  import todoPopupEdit from '../todoComponents/todoPopupEdit'
+  import format from 'date-fns/format'
+  import parseISO from 'date-fns/parseISO'
+  import Endpoints from '../../data/Endpoints'
 
   export default {
     name: 'dashboard',
-    components: { PopupEdit, PopupDelete, Popup },
-    mounted() {
-      this.addShow()
+    components: {
+      todoPopupEdit,
     },
+
     data() {
       return {
         searchToggle: true,
         newProjects: [],
-        projects: [{
-            status: 'ongoing',
-            title: 'deneme 2',
-            person: 'deneme 2',
-            due: '02.01.2012'
-          },
-          {
-            status: 'overdue',
-            title: 'deneme 1',
-            person: 'deneme 1',
-            due: '01.01.2012'
-          },
-        ],
+        projects: [],
         snackbarEdited: false,
         postDeleted: false,
       }
     },
     methods: {
+      writeSomething(something) {
+        console.log(something)
+      },
       addShow() {
         this.newProjects = this.projects.map(projects => ({
           ...projects,
           show: false
-        }))
+        }));
       },
       sort(prop) {
         if (this.searchToggle) {
@@ -133,6 +139,15 @@
           this.searchToggle = !this.searchToggle
         }
       }
+    },
+    created() {
+      this.$http.get(Endpoints.todoItemGet).then(function (data) {
+        this.projects = data.body;
+        this.projects.forEach(element => {
+          element.newDate = element.due ? format(parseISO(element.due), 'do MMM yyyy') : ''
+        });
+        this.addShow()
+      })
     },
   }
 </script>

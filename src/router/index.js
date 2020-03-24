@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Blog from '../views/Blog.vue'
 import Todo from '../views/Todo.vue'
-import AdminBlog from '../views/AdminBlog.vue'
+import SingleBlog from '../views/SingleBlog.vue'
+import AddBlog from '../views/AddBlog'
 
 Vue.use(VueRouter)
 
@@ -19,15 +20,20 @@ const routes = [
     component: Blog,
   },
   {
+    path: '/addblog',
+    name: 'AddBlog',
+    component: AddBlog,
+  },
+  {
     path: '/todo',
     name: 'Todo',
     component: Todo,
   },
   {
-    path: '/adminBlog',
-    name: 'AdminBlog',
-    component: AdminBlog,
-  }
+    path: '/:id',
+    name: 'SingleBlog',
+    component: SingleBlog,
+  },
 ]
 
 const router = new VueRouter({

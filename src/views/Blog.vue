@@ -1,16 +1,16 @@
 <template>
   <div>
-    <userBlogView />
+    <blogViewAll />
   </div>
 </template>
 
 <script>
-  import userBlogView from '../components/blogComponents/userBlogView'
+  import blogViewAll from '../components/blogComponents/blogViewAll'
 
   export default {
     name: 'Blog',
     components: {
-      userBlogView
+      blogViewAll
     }
   }
 </script>

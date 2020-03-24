@@ -1,16 +1,16 @@
 <template>
   <div>
-    <homeBlogView />
+    <blogViewHome />
   </div>
 </template>
 
 <script>
-  import homeBlogView from '../components/blogComponents/homeBlogView'
+  import blogViewHome from '../components/blogComponents/blogViewHome'
 
   export default {
     name: 'Home',
     components: {
-      homeBlogView
+      blogViewHome
     }
   }
 </script>

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <todoView />
+    <todoViewAll />
   </div>
 </template>
 
 <script>
-  import todoView from '../components/todoComponents/todoView'
+  import todoViewAll from '../components/todoComponents/todoViewAll'
 
   export default {
     name: 'Todo',
     components: {
-      todoView
+      todoViewAll
     }
   }
 </script>

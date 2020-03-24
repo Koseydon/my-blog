@@ -10,7 +10,7 @@
                 <v-form class="px-3" ref="form">
                     <v-text-field label='Title' v-model="title" prepend-icon='mdi-folder' :rules='inputRules'>
                     </v-text-field>
-                    <v-textarea label='Information' v-model="content" prepend-icon='mdi-pencil' :rules='inputRules'>
+                    <v-textarea label='Information' v-model="text" prepend-icon='mdi-pencil' :rules='inputRules'>
                     </v-textarea>
                     <v-menu max-width="290">
                         <template v-slot:activator="{ on }">
@@ -38,8 +38,11 @@
 </template>
 
 <script>
-    // import format from 'date-fns/format'
-    // import parseISO from 'date-fns/parseISO'
+    import format from 'date-fns/format'
+    import parseISO from 'date-fns/parseISO'
+    import UserInfos from '../../data/UserInfos'
+    import Endpoints from '../../data/Endpoints'
+
     import {
         bus
     } from '../../main'
@@ -48,7 +51,7 @@
         data() {
             return {
                 title: '',
-                content: '',
+                text: '',
                 due: null,
                 inputRules: [
                     v => v.length >= 3 || 'Minimum length is 3 characters'
@@ -57,7 +60,7 @@
                 dialog: false,
                 items: ['ongoing', 'complete', 'overdue'],
                 status: '',
-                people: ['The Net Ninja', 'Ryu', 'Chun Li', 'Gouken', 'Yoshi'],
+                people: Object.keys(UserInfos.authors),
                 person: ''
             }
         },
@@ -66,30 +69,28 @@
                 if (this.$refs.form.validate()) {
                     this.loading = true;
                     const data = {
-                        title: this.title,
-                        content: this.content,
-                        due: this.due,
+                        todoTitle: this.title,
+                        todoText: this.text,
                         status: this.status,
+                        due: this.due,
                         person: this.person
                     };
-                    this.$http.post("http://localhost:3000/add", data).then(() => {
+                    this.$http.post(Endpoints.todoItemPost, data).then(() => {
                         this.loading = false;
                         this.dialog = false;
-                        this.$emit('projectAdded')
                     });
-
                 }
             }
         },
+        computed: {
+            formatedDate() {
+                return this.due ? format(parseISO(this.due), 'do MMM yyyy') : ''
+            }
+        },
         created() {
-            bus.$on('addblogpopuptoggle', () => {
+            bus.$on('addtodopopuptoggle', () => {
                 this.dialog = true;
             })
         },
-        computed: {
-            // formatedDate() {
-            //     return this.due ? format(parseISO(this.due), 'do MMM yyyy') : ''
-            // }
-        }
     }
 </script>
