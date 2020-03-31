@@ -104,16 +104,17 @@
             }
         },
 
-        created() {
-            this.$http.get(Endpoints.blogItemGet).then(function (data) {
-                this.items = data.body
-                this.items.forEach(element => {
-                    element.newDate = element.date ? format(parseISO(element.date), 'do MMM yyyy') : ''
-                });
-            })
+        async created() {
+            let response = await this.$http.get(Endpoints.blogItemGet)
+            this.items = response.body
+            this.items.forEach(element => {
+                element.newDate = element.date ? format(parseISO(element.date), 'do MMM yyyy') : ''
+            });
+            this.items.reverse()
         },
 
         data: () => ({
+            fab: true,
             searchToggle: false,
             search: '',
             items: [],

@@ -71,7 +71,7 @@
             formatedDatePlaceholder(date) {
                 return date ? format(parseISO(date), 'do MMM yyyy') : ''
             },
-            submit() {
+            async submit() {
                 if (this.$refs.form.validate()) {
                     this.loading = true;
                     const data = {
@@ -81,10 +81,15 @@
                         due: this.due,
                         person: this.person
                     };
-                    this.$http.put(Endpoints.todoSingleItemPut + this.inputId, data).then(() => {
-                        this.loading = false;
-                        this.dialog = false;
-                    });  
+
+                    await this.$http.put(Endpoints.todoSingleItemPut + this.inputId, data, {
+                        headers: {
+                            'token': localStorage.getItem('token')
+                        }
+                    })
+                    this.loading = false;
+                    this.dialog = false;
+                    location.reload();
                 }
             }
         },
@@ -93,14 +98,13 @@
                 return this.due ? format(parseISO(this.due), 'do MMM yyyy') : ''
             }
         },
-        created() {
-            this.$http.get(Endpoints.todoSingleItemGet + this.inputId).then(function (data) {
-                this.title = data.body.todoTitle;
-                this.text = data.body.todoText;
-                this.status = data.body.status;
-                this.duePlaceholder = this.formatedDatePlaceholder(data.body.due);
-                this.person = data.body.person;
-            })
+        async created() {
+            let response = await this.$http.get(Endpoints.todoSingleItemGet + this.inputId)
+            this.title = response.body.todoTitle;
+            this.text = response.body.todoText;
+            this.status = response.body.status;
+            this.duePlaceholder = this.formatedDatePlaceholder(response.body.due);
+            this.person = response.body.person;
         }
     }
 </script>

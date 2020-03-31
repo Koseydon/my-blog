@@ -65,7 +65,7 @@
             }
         },
         methods: {
-            submit() {
+            async submit() {
                 if (this.$refs.form.validate()) {
                     this.loading = true;
                     const data = {
@@ -75,10 +75,16 @@
                         due: this.due,
                         person: this.person
                     };
-                    this.$http.post(Endpoints.todoItemPost, data).then(() => {
-                        this.loading = false;
-                        this.dialog = false;
+
+                    let res = await this.$http.post(Endpoints.todoItemPost, data, {
+                        headers: {
+                            'token': localStorage.getItem('token')
+                        }
                     });
+                    
+                    console.log(res.status)
+                    this.loading = false;
+                    this.dialog = false;
                 }
             }
         },

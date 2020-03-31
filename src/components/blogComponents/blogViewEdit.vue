@@ -6,7 +6,7 @@
             <v-card>
                 <v-row justify="center">
                     <v-card-title>
-                        <h2 align>Add a new blog post</h2>
+                        <h2 align>Edit blog post</h2>
                     </v-card-title>
                 </v-row>
                 <v-card-text>
@@ -30,7 +30,7 @@
                             </v-col>
                         </v-row>
                         <v-spacer></v-spacer>
-                        <v-btn text class="success mx-0 mt-3" @click="submit" :loading='loading'>Add blog post</v-btn>
+                        <v-btn text class="success mx-0 mt-3" @click="submit" :loading='loading'>Edit blog post</v-btn>
                     </v-form>
                 </v-card-text>
             </v-card>
@@ -45,6 +45,7 @@
     export default {
         data() {
             return {
+                id: '',
                 title: '',
                 subtitle: '',
                 uploadImage: '',
@@ -56,6 +57,7 @@
                 category: '',
                 categories: Object.keys(UserInfos.categories),
                 authors: Object.keys(UserInfos.authors),
+                toggleUserSignin: false,
                 inputRules: [
                     v => v.length >= 3 || 'Minimum length is 3 characters'
                 ],
@@ -72,13 +74,11 @@
             async submit() {
                 if (this.$refs.form.validate()) {
                     this.loading = true;
-
                     if (this.uploadImage === '') {
                         this.image = this.defaultImage
                     } else {
                         const formData = new FormData();
                         formData.append('image', this.uploadImage);
-
                         let imagePostResponse = await this.$http.post(Endpoints.blogImagePost,
                             formData, {
                                 headers: {
@@ -90,34 +90,43 @@
                     }
 
                     const data = {
-                        title: this.title,
-                        subtitle: this.subtitle,
-                        text: this.text,
-                        category: this.category,
+                        blogTitle: this.title,
+                        blogSubTitle: this.subtitle,
+                        blogText: this.text,
+                        blogCategory: this.category,
                         author: this.author,
                         avatar: this.avatar,
                         image: this.image
                     };
 
-                    await this.$http.post(Endpoints.blogItemPost, data, {
+                    await this.$http.put(Endpoints.blogSingleItemPut + this.$route.params.id, data, {
                         headers: {
                             'token': localStorage.getItem('token')
                         }
                     })
 
                     this.loading = false;
+                    window.location.href = '/' + this.$route.params.id
+
                 }
             }
         },
         async created() {
-            try {
-                await this.$http.get(Endpoints.validateToken, {
-                    headers: {
-                        'token': localStorage.getItem('token')
-                    }
-                });
-            } catch (err) {
-                window.location.href = '/'
+            let response = await this.$http.get(Endpoints.blogSingleView + this.$route.params.id)
+            this.title = response.body.blogTitle;
+            this.subtitle = response.body.blogSubTitle;
+            this.text = response.body.blogText;
+            this.category = response.body.blogCategory;
+            this.author = response.body.author;
+            this.avatar = response.body.avatar;
+            this.image = response.body.image;
+            let responseToken = await this.$http.get(Endpoints.validateToken, {
+                headers: {
+                    'token': localStorage.getItem('token')
+                }
+            });
+            if (responseToken.status === 200) {
+                this.toggleUserSignin = true
             }
         },
     }

@@ -5,6 +5,7 @@ import Blog from '../views/Blog.vue'
 import Todo from '../views/Todo.vue'
 import SingleBlog from '../views/SingleBlog.vue'
 import AddBlog from '../views/AddBlog'
+import EditBlog from '../views/EditBlog'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/todo',
     name: 'Todo',
     component: Todo,
+  },
+  {
+    path: '/editblog/:id',
+    name: 'EditBlog',
+    component: EditBlog,
   },
   {
     path: '/:id',

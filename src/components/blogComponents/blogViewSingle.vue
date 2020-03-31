@@ -44,6 +44,24 @@
                 {{ item.blogText }}
               </span>
             </v-card-text>
+            <v-flex class="d-flex justify-space-between">
+              <v-btn v-show="toggleUserSignin" @click="blogEdit" fab dark small text color="grey">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-speed-dial v-show="toggleUserSignin" direction="right">
+                <template v-slot:activator>
+                  <v-btn fab text left small color="grey">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
+                <v-btn fab dark small text color="grey">
+                  <v-icon>mdi-close-thick</v-icon>
+                </v-btn>
+                <v-btn @click="deleteBlogPost(item._id)" fab dark small text color="grey">
+                  <v-icon>mdi-check-bold</v-icon>
+                </v-btn>
+              </v-speed-dial>
+            </v-flex>
           </v-col>
         </v-row>
       </v-card>
@@ -59,22 +77,40 @@
   export default {
     data() {
       return {
+        toggleUserSignin: false,
         id: this.$route.params.id,
         item: [],
       }
     },
-    methods: {
-
-    },
-    created() {
-      this.$http.get(Endpoints.blogSingleView + this.id).then(function (data) {
-        this.item = data.body;
-        this.item.newDate = this.item.date ? format(parseISO(this.item.date), 'do MMM yyyy') : ''
-      });
+    async created() {
+      let response = await this.$http.get(Endpoints.blogSingleView + this.id)
+      this.item = response.body;
+      this.item.newDate = this.item.date ? format(parseISO(this.item.date), 'do MMM yyyy') : ''
+      let responseToken = await this.$http.get(Endpoints.validateToken, {
+                headers: {
+                    'token': localStorage.getItem('token')
+                }
+            });
+            if (responseToken.status === 200) {
+                this.toggleUserSignin = true
+            }
     },
     computed: {
       formatedDate() {
         return this.due ? format(parseISO(this.due), 'do MMM yyyy') : ''
+      }
+    },
+    methods: {
+      blogEdit() {
+        window.location.href = '/editblog/' + this.$route.params.id
+      },
+      async deleteBlogPost(id) {
+        await this.$http.delete(Endpoints.blogSingleItemDelete + id, {
+          headers: {
+            'token': localStorage.getItem('token')
+          }
+        })
+        window.location.href = '/blog'
       }
     }
   }

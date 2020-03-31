@@ -10,7 +10,7 @@
             <v-layout row class="mb-3">
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <v-btn small text color="grey" class="ml-3" @click="sort('title')" v-on="on">
+                  <v-btn small text color="grey" class="ml-3" @click="sort('todoTitle')" v-on="on">
                     <v-icon left small>mdi-folder</v-icon>
                     <span class="caption text-lowercase">By project name</span>
                   </v-btn>
@@ -73,14 +73,13 @@
                         <v-icon small>mdi-delete</v-icon>
                       </v-btn>
                     </template>
-                    <v-btn v-on="on" fab dark small text color="blue">
-                      <v-icon>mdi-account-arrow-left</v-icon>
+                    <v-btn fab dark small text color="grey">
+                      <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
-                    <v-btn v-on="on" fab dark small text color="blue">
-                      <v-icon>mdi-account-arrow-left</v-icon>
+                    <v-btn @click="deleteTodoPost(project._id)" fab dark small text color="grey">
+                      <v-icon>mdi-check-bold</v-icon>
                     </v-btn>
                   </v-speed-dial>
-                  <!-- <todoPopupDelete @postDelete="postDeleted = true" v-bind:inputId="project._id" /> -->
                   <todoPopupEdit v-bind:inputId="project._id" />
                 </v-flex>
               </v-layout>
@@ -118,11 +117,17 @@
         projects: [],
         snackbarEdited: false,
         postDeleted: false,
+        toggleUserSignin: false,
       }
     },
     methods: {
-      writeSomething(something) {
-        console.log(something)
+      async deleteTodoPost(id) {
+        await this.$http.delete(Endpoints.todoSingleItemDelete + id, {
+          headers: {
+            'token': localStorage.getItem('token')
+          }
+        })
+        location.reload();
       },
       addShow() {
         this.newProjects = this.projects.map(projects => ({
@@ -140,14 +145,21 @@
         }
       }
     },
-    created() {
-      this.$http.get(Endpoints.todoItemGet).then(function (data) {
-        this.projects = data.body;
-        this.projects.forEach(element => {
-          element.newDate = element.due ? format(parseISO(element.due), 'do MMM yyyy') : ''
-        });
-        this.addShow()
-      })
+    async created() {
+      let response = await this.$http.get(Endpoints.todoItemGet)
+      this.projects = response.body;
+      this.projects.forEach(element => {
+        element.newDate = element.due ? format(parseISO(element.due), 'do MMM yyyy') : ''
+      });
+      this.addShow()
+      let responseToken = await this.$http.get(Endpoints.validateToken, {
+        headers: {
+          'token': localStorage.getItem('token')
+        }
+      });
+      if (responseToken.status === 200) {
+        this.toggleUserSignin = true
+      }
     },
   }
 </script>

@@ -70,19 +70,21 @@
       items: [],
     }),
 
-    created() {
-      this.$http.get(Endpoints.blogItemGet).then(function (data) {
-        if (data.body.length > 4) {
-          this.items = data.body.slice((data.body.length - 4))
+    async created() {
+      let response = await this.$http.get(Endpoints.blogItemGet)
+        if (response.body.length > 4) {
+          this.items = response.body.slice((response.body.length - 4))
         } else {
-          this.items = data.body
+          this.items = response.body
         }
+
         this.items.forEach(element => {
           element.newDate = element.date ? format(parseISO(element.date), 'do MMM yyyy') : ''
         });
+        
         this.firstItem.push(this.items.pop())
         this.items = this.items.reverse()
-      })
+
     },
   }
 </script>

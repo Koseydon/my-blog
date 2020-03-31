@@ -12,32 +12,55 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-form ref="form" v-model="valid">
-                        <v-text-field label="E-mail" name="E-mail" prepend-icon="mdi-email" type="text" v-model="email"
-                            class="my-input"  @keydown.space.prevent @keydown.enter.native='submitEnter' @paste.prevent 
-                            :rules="[rules.required, rules.email]"/>
-                        <v-text-field id="password" label="Password" name="password" prepend-icon="mdi-lock" type="password"
-                            v-model="password" @keydown.enter.native='submitEnter' :rules="[rules.required, rules.counterMin, rules.counterMax]"/>
+                        <v-text-field label="E-mail" name="E-mail" prepend-icon="mdi-email" type="text"
+                            v-model="logemail" class="my-input" @keydown.space.prevent
+                            @keydown.enter.native='submitEnter' @paste.prevent :rules="[rules.required, rules.email]" />
+                        <v-text-field id="password" label="Password" name="password" prepend-icon="mdi-lock"
+                            type="password" v-model="logpassword" @keydown.enter.native='submitEnter'
+                            :rules="[rules.required, rules.counterMin, rules.counterMax]" />
+                        <v-row justify="end" class="me-4 pb-5">
+                            <vue-recaptcha ref="recaptcha" @verify="onVerify"
+                                sitekey="6LdcuNAUAAAAADZkzFttjkrbqd1ZjyFvbBlvEcnR" :loadRecaptchaScript="true">
+                            </vue-recaptcha>
+                        </v-row>
                     </v-form>
                 </v-card-text>
-                <!-- <v-row justify="end" class="me-4 pb-5">
-                    <vue-recaptcha ref="recaptcha" @verify="onVerify" sitekey="6LdcuNAUAAAAADZkzFttjkrbqd1ZjyFvbBlvEcnR"
-                        :loadRecaptchaScript="true"></vue-recaptcha>
-                </v-row> -->
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn :disabled="!valid" @click="submit" color="primary">Signup</v-btn>
+                    <v-btn :disabled="!valid" @click="submit" color="primary">Login</v-btn>
                 </v-card-actions>
             </v-card>
+            <v-alert :value='successAlert' type="success">
+                {{ successType }}
+            </v-alert>
+            <v-alert :value='errorAlert' type="error">
+                {{ errorMessage }}
+            </v-alert>
         </v-dialog>
     </div>
 </template>
 
 <script>
+    import VueRecaptcha from 'vue-recaptcha';
+    import Endpoints from '../data/Endpoints';
+    import {
+        errorCase,
+        
+    } from '../data/Funcs';
+
     export default {
+        components: {
+            VueRecaptcha
+        },
         data() {
             return {
-                email: '',
-                password: '',
+                logemail: '',
+                logpassword: '',
+                recaptchaToken: '',
+                errorMessage: '',
+                successType: '',
+                successAlert: false,
+                errorAlert: false,
                 valid: true,
                 rules: {
                     required: value => !!value || 'Required.',
@@ -57,7 +80,33 @@
             }
         },
         methods: {
-
+            onVerify(response) {
+                this.recaptchaToken = response;
+            },
+            async submit() {
+                if (this.recaptchaToken === '') {
+                    this.successAlert = false;
+                    this.errorAlert = true;
+                    this.errorMessage = errorCase("recaptcha")
+                } else {
+                    const data = {
+                        logemail: this.logemail,
+                        logpassword: this.logpassword,
+                        recaptchaToken: this.recaptchaToken
+                    };
+                    try {
+                        let response = await this.$http.post(Endpoints.userLogin, data)
+                        localStorage.setItem('token', response.body.token)
+                        window.location.href = '/'
+                    } catch (err) {
+                        this.successAlert = false;
+                        this.$refs.recaptcha.reset();
+                        this.errorAlert = true;
+                        //const errorType = err.body.errors[0].type;
+                        this.errorMessage = errorCase("somethingWrong");
+                    }
+                }
+            },
         },
         created() {
 
