@@ -26,7 +26,7 @@
                             @keydown.enter.native='submitEnter' :rules="[rules.required]" />
                         <v-row justify="end" class="me-4 pb-5">
                             <vue-recaptcha ref="recaptcha" @verify="onVerify"
-                                sitekey="6LdcuNAUAAAAADZkzFttjkrbqd1ZjyFvbBlvEcnR" :loadRecaptchaScript="true">
+                                sitekey="6Leuj-UUAAAAAPZEKLg-T8SJ4Pa28GbCySOQc45-" :loadRecaptchaScript="true">
                             </vue-recaptcha>
                         </v-row>
                     </v-form>
