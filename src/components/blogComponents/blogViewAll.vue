@@ -1,7 +1,7 @@
 <template>
     <v-content>
         <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
-            src="http://localhost:3000/logos/MoB-logo.png"></v-img>
+            src="http://dreamforge.space:3000/logos/MoB-logo.png"></v-img>
         <v-container>
             <v-row justify="center">
                 <v-col cols="9">
