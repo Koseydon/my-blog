@@ -2,7 +2,7 @@
   <v-content>
     <v-container>
       <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
-        src="https://dreamforge.space:3000/logos/MoB-logo.png">
+        src="/backend/logos/MoB-logo.png">
       </v-img>
       <v-container>
         <v-row justify="center">
