@@ -1,7 +1,7 @@
 <template>
     <v-content>
         <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
-            src="http://localhost:3000/logos/MOB-logo.png"></v-img>
+            src="http://163.172.139.46:3000/logos/MOB-logo.png"></v-img>
         <v-container>
             <v-card>
                 <v-row justify="center">
