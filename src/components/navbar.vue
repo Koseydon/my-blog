@@ -4,8 +4,8 @@
         <v-app-bar dark>
             <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="grey--text">
-                <span class="text-lowercase">my</span>
-                <span class="font-weight-light text-uppercase">Blog</span>
+                <span class="text-lowercase">dream</span>
+                <span class="font-weight-light text-uppercase">Forge</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-speed-dial v-show="!toggleUserSignin" direction="left">

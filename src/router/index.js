@@ -24,6 +24,13 @@ const routes = [
     path: '/addblog',
     name: 'AddBlog',
     component: AddBlog,
+    // beforeEnter: (next) => {
+    //   const loggedIn = localStorage.getItem('token')
+    //   console.log('The token is:', loggedIn)
+    //   if (!loggedIn) {
+    //     next(window.location.href = '/')
+    //   }
+    // }
   },
   {
     path: '/todo',

@@ -1,8 +1,7 @@
 <template>
   <v-content>
     <v-container>
-      <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
-        src="/backend/logos/MoB-logo.png">
+      <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12" src="/backend/logos/MoB-logo.png">
       </v-img>
       <v-container>
         <v-row justify="center">
@@ -46,8 +45,8 @@
               </v-tooltip>
               <v-spacer></v-spacer>
             </v-layout>
-            <v-card @click="project.show = !project.show" flat v-for="project in newProjects" :key="project.todoTitle">
-              <v-layout wrap :class="`pa-3 project ${project.status}`">
+            <v-card flat v-for="project in newProjects" :key="project.todoTitle">
+              <v-layout @click="project.show = !project.show" wrap :class="`pa-3 project ${project.status}`">
                 <v-flex xs12 md6 xl6>
                   <div class="caption grey--text">Project Title</div>
                   <div>{{ project.todoTitle }}</div>
@@ -67,7 +66,7 @@
                   </div>
                 </v-flex>
                 <v-flex class="d-flex flex-row-reverse" xs2 sm4 md2 xl1>
-                  <v-speed-dial direction="right">
+                  <v-speed-dial v-if="toggleUserSignin" @click.native.stop direction="right">
                     <template v-slot:activator>
                       <v-btn fab text left small color="grey">
                         <v-icon small>mdi-delete</v-icon>
@@ -80,7 +79,7 @@
                       <v-icon>mdi-check-bold</v-icon>
                     </v-btn>
                   </v-speed-dial>
-                  <todoPopupEdit v-bind:inputId="project._id" />
+                  <todoPopupEdit v-if="toggleUserSignin" v-bind:inputId="project._id" />
                 </v-flex>
               </v-layout>
               <v-divider></v-divider>
@@ -117,7 +116,7 @@
         projects: [],
         snackbarEdited: false,
         postDeleted: false,
-        toggleUserSignin: false,
+        toggleUserSignin: true,
       }
     },
     methods: {
@@ -160,6 +159,17 @@
       if (responseToken.status === 200) {
         this.toggleUserSignin = true
       }
+
+      // this.addShow()
+      // this.$http.get(Endpoints.validateToken, {
+      //   headers: {
+      //     'token': localStorage.getItem('token')
+      //   }
+      // }).then(response => {
+      //   if (response.status === 200) {
+      //     this.toggleUserSignin = true
+      //   }
+      // });
     },
   }
 </script>
