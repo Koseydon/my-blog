@@ -17,7 +17,7 @@
                         </v-text-field>
                         <v-file-input label="Image" v-model="uploadImage" accept="image/*">
                         </v-file-input>
-                        <tiptap-vuetify height="1500px" prepend-icon='mdi-pencil' :rules='inputRules' v-model="text" :extensions="extensions" />
+                        <tiptap-vuetify :card-props="{ flat: true }" v-model="text" :extensions="extensions" />
                         <v-row>
                             <v-col cols="12" sm="6">
                                 <v-select @change="selectImage(category)" chips :items="categories" label="Category"

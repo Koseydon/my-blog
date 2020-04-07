@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div></div>
-    <navbar/>
+    <navbar />
     <v-content class="mx-4 mb-4">
       <router-view></router-view>
     </v-content>
@@ -31,13 +31,11 @@
 </script>
 
 <style>
-  
   #app {
     background-color: #f4f8fb;
-    background-image: url(https://dreamforge.space/backend/background/15.jpg);
-    background-size:     100% 500px;
-    background-repeat:   no-repeat;
+    background-image: url(http://localhost:3000/backend/background/forge-background.jpg);
+    background-size: 100% 1000px;
+    background-repeat: no-repeat;
     background-position: center top;
   }
-
 </style>
