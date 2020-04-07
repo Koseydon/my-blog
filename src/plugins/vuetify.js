@@ -1,19 +1,18 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
+import { TiptapVuetifyPlugin } from 'tiptap-vuetify'
+import 'tiptap-vuetify/dist/main.css'
+import 'vuetify/dist/vuetify.min.css'
 
-// import colors from 'vuetify/lib/util/colors'
+const vuetify = new Vuetify()
 
 Vue.use(Vuetify);
+Vue.use(TiptapVuetifyPlugin, {
+    vuetify,
+    iconsGroup: 'mdi'
+  })
 
 export default new Vuetify({
-    // theme: {
-    //     themes: {
-    //         light: {
-    //             primary: colors.red.darken1, // #E53935
-    //             secondary: colors.blue.lighten4, // #FFCDD2
-    //             accent: colors.indigo.base, // #3F51B5
-    //         },
-    //     },
-    // },
+
 });
 

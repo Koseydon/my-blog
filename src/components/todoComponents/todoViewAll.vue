@@ -116,7 +116,7 @@
         projects: [],
         snackbarEdited: false,
         postDeleted: false,
-        toggleUserSignin: true,
+        toggleUserSignin: false,
       }
     },
     methods: {

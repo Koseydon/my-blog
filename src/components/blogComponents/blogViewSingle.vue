@@ -40,9 +40,7 @@
           <v-col cols="8">
             <v-card-subtitle>{{ item.blogCategory }}</v-card-subtitle>
             <v-card-text>
-              <span class="blogText">
-                {{ item.blogText }}
-              </span>
+              <span v-html="item.blogText" class="blogText"></span>
             </v-card-text>
             <v-flex class="d-flex justify-space-between">
               <v-btn v-show="toggleUserSignin" @click="blogEdit" fab dark small text color="grey">

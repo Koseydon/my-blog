@@ -1,7 +1,7 @@
 <template>
     <v-content>
-        <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
-            src="/backend/logos/MoB-logo.png"></v-img>
+        <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12" src="/backend/logos/MoB-logo.png">
+        </v-img>
         <v-container>
             <v-card>
                 <v-row justify="center">
@@ -17,8 +17,7 @@
                         </v-text-field>
                         <v-file-input label="Image" v-model="uploadImage" accept="image/*">
                         </v-file-input>
-                        <v-textarea label='Content' v-model="text" prepend-icon='mdi-pencil' :rules='inputRules'>
-                        </v-textarea>
+                        <tiptap-vuetify height="1500px" prepend-icon='mdi-pencil' :rules='inputRules' v-model="text" :extensions="extensions" />
                         <v-row>
                             <v-col cols="12" sm="6">
                                 <v-select @change="selectImage(category)" chips :items="categories" label="Category"
@@ -41,10 +40,47 @@
 <script>
     import Endpoints from '../../data/Endpoints'
     import UserInfos from '../../data/UserInfos'
+    import {
+        TiptapVuetify,
+        Heading,
+        Bold,
+        Italic,
+        Underline,
+        Paragraph,
+        BulletList,
+        OrderedList,
+        ListItem,
+        Link,
+        HardBreak,
+        HorizontalRule,
+        History
+    } from 'tiptap-vuetify'
+
 
     export default {
+        components: {
+            TiptapVuetify
+        },
         data() {
             return {
+                extensions: [
+                    History,
+                    Link,
+                    Underline,
+                    Italic,
+                    ListItem,
+                    BulletList,
+                    OrderedList,
+                    [Heading, {
+                        options: {
+                            levels: [1, 2, 3]
+                        }
+                    }],
+                    Bold,
+                    HorizontalRule,
+                    Paragraph,
+                    HardBreak
+                ],
                 title: '',
                 subtitle: '',
                 uploadImage: '',
@@ -106,6 +142,7 @@
                     })
 
                     this.loading = false;
+                    window.location.href = '/blog'
                 }
             }
         },
