@@ -33,7 +33,7 @@
 <style>
   #app {
     background-color: #f4f8fb;
-    background-image: url(http://localhost:3000/backend/background/forge-background.jpg);
+    background-image: url(/backend/background/forge-background.jpg);
     background-size: 100% 1000px;
     background-repeat: no-repeat;
     background-position: center top;
