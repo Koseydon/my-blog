@@ -1,7 +1,7 @@
 <template>
   <v-content>
-    <v-img width="500px" height="200px" color="grey" tile class="mx-auto mt-12"
-      src="/backend/logos/MoB-logo.png"></v-img>
+    <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12"
+      src="/backend/logos/dreamforge-logo.png"></v-img>
     <v-container>
       <v-row v-for="(item, i) in firstItem" :key="i">
         <v-hover v-slot:default="{ hover }">
@@ -72,18 +72,18 @@
 
     async created() {
       let response = await this.$http.get(Endpoints.blogItemGet)
-        if (response.body.length > 4) {
-          this.items = response.body.slice((response.body.length - 4))
-        } else {
-          this.items = response.body
-        }
+      if (response.body.length > 4) {
+        this.items = response.body.slice((response.body.length - 4))
+      } else {
+        this.items = response.body
+      }
 
-        this.items.forEach(element => {
-          element.newDate = element.date ? format(parseISO(element.date), 'do MMM yyyy') : ''
-        });
-        
-        this.firstItem.push(this.items.pop())
-        this.items = this.items.reverse()
+      this.items.forEach(element => {
+        element.newDate = element.date ? format(parseISO(element.date), 'do MMM yyyy') : ''
+      });
+
+      this.firstItem.push(this.items.pop())
+      this.items = this.items.reverse()
 
     },
   }

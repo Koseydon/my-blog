@@ -7,8 +7,8 @@ export default {
     },
     categories: {
         Games: '/backend/defaultImages/games.jpg',
-        Music: '/backend/defaultImages/music.png',
-        Technology: '/backend/defaultImages/technology.png',
-        Life: '/backend/defaultImages/games.jpg'
+        Music: '/backend/defaultImages/music.jpg',
+        Technology: '/backend/defaultImages/technology.jpg',
+        Life: '/backend/defaultImages/life.jpg'
     } 
 }
