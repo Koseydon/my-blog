@@ -34,9 +34,8 @@
   #app {
     background-color: #f4f8fb;
     background-image: url(/backend/background/forge-background.png);
-    background-size: 130% 2100px;
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: 30% 50%;
-    
+    background-position: 100% 70%;
   }
 </style>
