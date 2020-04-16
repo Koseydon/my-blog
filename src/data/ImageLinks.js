@@ -10,5 +10,9 @@ export default {
         Music: '/backend/defaultImages/music.jpg',
         Technology: '/backend/defaultImages/technology.jpg',
         Life: '/backend/defaultImages/life.jpg'
-    } 
+    },
+    images: {
+        Logo: '/backend/logos/dreamforge-logo.png',
+        Icon: '/backend/logos/anvil.png'
+    }  
 }

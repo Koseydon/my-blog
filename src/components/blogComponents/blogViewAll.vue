@@ -1,7 +1,6 @@
 <template>
     <v-content>
-        <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12"
-            src="/backend/logos/dreamforge-logo.png"></v-img>
+        <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12" :src="siteLogo"></v-img>
         <v-container>
             <v-row justify="center">
                 <v-col cols="9">
@@ -76,6 +75,7 @@
 </template>
 
 <script>
+    import ImageLinks from '../../data/ImageLinks'
     import Endpoints from '../../data/Endpoints'
     import format from 'date-fns/format'
     import parseISO from 'date-fns/parseISO'
@@ -114,6 +114,7 @@
         },
 
         data: () => ({
+            siteLogo: ImageLinks.images.Logo,
             fab: true,
             searchToggle: false,
             search: '',

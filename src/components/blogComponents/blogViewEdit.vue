@@ -1,7 +1,7 @@
 <template>
     <v-content>
         <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12"
-            src="/backend/logos/dreamforge-logo.png"></v-img>
+            :src="siteLogo"></v-img>
         <v-container>
             <v-card>
                 <v-row justify="center">
@@ -39,7 +39,7 @@
 
 <script>
     import Endpoints from '../../data/Endpoints'
-    import UserInfos from '../../data/UserInfos'
+    import ImageLinks from '../../data/ImageLinks'
     import {
         TiptapVuetify,
         Heading,
@@ -62,6 +62,7 @@
         },
         data() {
             return {
+                siteLogo: ImageLinks.images.Logo,
                 extensions: [
                     History,
                     Link,
@@ -90,8 +91,8 @@
                 author: '',
                 avatar: '',
                 category: '',
-                categories: Object.keys(UserInfos.categories),
-                authors: Object.keys(UserInfos.authors),
+                categories: Object.keys(ImageLinks.categories),
+                authors: Object.keys(ImageLinks.authors),
                 toggleUserSignin: false,
                 inputRules: [
                     v => v.length >= 3 || 'Minimum length is 3 characters'
@@ -101,10 +102,10 @@
         },
         methods: {
             selectAvatar(author) {
-                this.avatar = UserInfos.authors[author]
+                this.avatar = ImageLinks.authors[author]
             },
             selectImage(category) {
-                this.defaultImage = UserInfos.categories[category]
+                this.defaultImage = ImageLinks.categories[category]
             },
             async submit() {
                 if (this.$refs.form.validate()) {

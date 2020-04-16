@@ -1,7 +1,6 @@
 <template>
   <v-content>
-    <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12"
-      src="/backend/logos/dreamforge-logo.png"></v-img>
+    <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12" :src="siteLogo"></v-img>
     <v-container>
       <v-row v-for="(item, i) in firstItem" :key="i">
         <v-hover v-slot:default="{ hover }">
@@ -58,6 +57,7 @@
 </template>
 
 <script>
+  import ImageLinks from '../../data/ImageLinks'
   import Endpoints from '../../data/Endpoints'
   import format from 'date-fns/format'
   import parseISO from 'date-fns/parseISO'
@@ -66,6 +66,7 @@
     name: 'blogViewHome',
 
     data: () => ({
+      siteLogo: ImageLinks.images.Logo,
       firstItem: [],
       items: [],
     }),

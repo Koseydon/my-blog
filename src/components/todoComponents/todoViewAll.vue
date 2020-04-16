@@ -1,8 +1,7 @@
 <template>
   <v-content>
     <v-container>
-      <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12"
-        src="/backend/logos/dreamforge-logo.png"></v-img>
+      <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12" :src="siteLogo"></v-img>
       <v-container>
         <v-row justify="center">
           <v-col cols="9">
@@ -102,6 +101,7 @@
   import format from 'date-fns/format'
   import parseISO from 'date-fns/parseISO'
   import Endpoints from '../../data/Endpoints'
+  import ImageLinks from '../../data/ImageLinks'
 
   export default {
     name: 'dashboard',
@@ -111,6 +111,7 @@
 
     data() {
       return {
+        siteLogo: ImageLinks.images.Logo,
         searchToggle: true,
         newProjects: [],
         projects: [],

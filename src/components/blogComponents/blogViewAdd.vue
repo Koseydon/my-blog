@@ -1,7 +1,6 @@
 <template>
     <v-content>
-        <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12"
-            src="/backend/logos/dreamforge-logo.png"></v-img>
+        <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12" :src="siteLogo"></v-img>
         <v-container>
             <v-card>
                 <v-row justify="center">
@@ -15,7 +14,7 @@
                         </v-text-field>
                         <v-text-field label='Subtitle' v-model="subtitle" prepend-icon='mdi-folder' :rules='inputRules'>
                         </v-text-field>
-                        <v-file-input label="Image" v-model="uploadImage" accept="image/*">
+                        <v-file-input label="Image" value="" v-model="uploadImage" accept="image/*">
                         </v-file-input>
                         <tiptap-vuetify :card-props="{ flat: true }" v-model="text" :extensions="extensions" />
                         <v-row>
@@ -39,7 +38,7 @@
 
 <script>
     import Endpoints from '../../data/Endpoints'
-    import UserInfos from '../../data/UserInfos'
+    import ImageLinks from '../../data/ImageLinks'
     import {
         TiptapVuetify,
         Heading,
@@ -63,6 +62,7 @@
         },
         data() {
             return {
+                siteLogo: ImageLinks.images.Logo,
                 extensions: [
                     History,
                     Link,
@@ -90,8 +90,8 @@
                 author: '',
                 avatar: '',
                 category: '',
-                categories: Object.keys(UserInfos.categories),
-                authors: Object.keys(UserInfos.authors),
+                categories: Object.keys(ImageLinks.categories),
+                authors: Object.keys(ImageLinks.authors),
                 inputRules: [
                     v => v.length >= 3 || 'Minimum length is 3 characters'
                 ],
@@ -100,10 +100,10 @@
         },
         methods: {
             selectAvatar(author) {
-                this.avatar = UserInfos.authors[author]
+                this.avatar = ImageLinks.authors[author]
             },
             selectImage(category) {
-                this.defaultImage = UserInfos.categories[category]
+                this.defaultImage = ImageLinks.categories[category]
             },
             async submit() {
                 if (this.$refs.form.validate()) {

@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import UserInfos from '../../data/UserInfos'
+    import ImageLinks from '../../data/ImageLinks'
     import Endpoints from '../../data/Endpoints'
     import format from 'date-fns/format'
     import parseISO from 'date-fns/parseISO'
@@ -59,7 +59,7 @@
                 due: null,
                 duePlaceholder: '',
                 items: ['ongoing', 'complete', 'overdue'],
-                people: Object.keys(UserInfos.authors),
+                people: Object.keys(ImageLinks.authors),
                 inputRules: [
                     v => v.length >= 3 || 'Minimum length is 3 characters'
                 ],

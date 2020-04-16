@@ -20,7 +20,7 @@
 
     watch: {
       '$route'(to) {
-        document.title = to.meta.title || 'Your Website'
+        document.title = to.meta.title || 'DreamForge'
       }
     },
 
@@ -33,9 +33,10 @@
 <style>
   #app {
     background-color: #f4f8fb;
-    background-image: url(/backend/background/forge-background.jpg);
-    background-size: 100% 1000px;
+    background-image: url(http://localhost:3000/backend/background/forge-background.png);
+    background-size: 130% 2100px;
     background-repeat: no-repeat;
-    background-position: center top;
+    background-position: 30% 50%;
+    
   }
 </style>

@@ -40,7 +40,7 @@
 <script>
     import format from 'date-fns/format'
     import parseISO from 'date-fns/parseISO'
-    import UserInfos from '../../data/UserInfos'
+    import ImageLinks from '../../data/ImageLinks'
     import Endpoints from '../../data/Endpoints'
 
     import {
@@ -60,7 +60,7 @@
                 dialog: false,
                 items: ['ongoing', 'complete', 'overdue'],
                 status: '',
-                people: Object.keys(UserInfos.authors),
+                people: Object.keys(ImageLinks.authors),
                 person: ''
             }
         },
@@ -85,6 +85,7 @@
                     console.log(res.status)
                     this.loading = false;
                     this.dialog = false;
+                    location.reload();
                 }
             }
         },

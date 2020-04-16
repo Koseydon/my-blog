@@ -2,7 +2,7 @@
 node_modules
 /dist
 src/data/Endpoints-local.js
-src/data/UserInfos-local.js
+src/data/ImageLinks-local.js
 
 # local env files
 .env.local

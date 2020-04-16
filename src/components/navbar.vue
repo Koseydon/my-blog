@@ -26,11 +26,11 @@
             </v-flex>
             <v-list-item>
                 <v-list-item-content>
-                    <v-list-item-title class="title grey--text">
-                        Application
-                    </v-list-item-title>
-                    <v-list-item-subtitle class="grey--text">
-                        subtext
+                    <v-list-item-avatar size="96">
+                        <img :src="siteIcon">
+                    </v-list-item-avatar>
+                    <v-list-item-subtitle class="grey--text text-center">
+                        dreamFORGE
                     </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+    import ImageLinks from '../data/ImageLinks'
     import Endpoints from '../data/Endpoints'
     import signupPopup from './signupPopup'
     import loginPopup from './loginPopup'
@@ -92,6 +93,7 @@
 
         data() {
             return {
+                siteIcon: ImageLinks.images.Icon,
                 drawer: false,
                 links: [],
                 toggleUserSignin: false
