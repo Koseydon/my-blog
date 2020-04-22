@@ -5,12 +5,12 @@
 </template>
 
 <script>
-  import blogViewEdit from '../components/blogComponents/blogViewEdit'
+import blogViewEdit from "../components/blogComponents/blogViewEdit";
 
-  export default {
-    name: 'EditBlog',
-    components: {
-      blogViewEdit
-    }
-  }
+export default {
+  name: "EditBlog",
+  components: {
+    blogViewEdit,
+  },
+};
 </script>

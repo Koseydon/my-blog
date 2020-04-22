@@ -1,5 +1,5 @@
 //Funcs.js
-import Messages from './Messages'
+import Messages from "./Messages";
 
 export function errorCase(errorType) {
   switch (errorType) {
@@ -16,15 +16,15 @@ export function errorCase(errorType) {
     case "disposable":
       return Messages.disposable;
     case "somethingWrong":
-      return Messages.somethingWrong;   
+      return Messages.somethingWrong;
   }
 }
 
 export function successCase(statusType) {
-  switch(statusType) {
-    case 'queued':
+  switch (statusType) {
+    case "queued":
       return Messages.queued;
-    case 'emailed':
+    case "emailed":
       return Messages.emailed;
   }
 }

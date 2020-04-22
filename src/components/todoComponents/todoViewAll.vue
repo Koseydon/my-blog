@@ -1,14 +1,28 @@
 <template>
   <v-content>
     <v-container>
-      <v-img width="600px" height="200px" color="grey" tile class="mx-auto mt-12" :src="siteLogo"></v-img>
+      <v-img
+        width="600px"
+        height="200px"
+        color="grey"
+        tile
+        class="mx-auto mt-12"
+        :src="siteLogo"
+      ></v-img>
       <v-container>
         <v-row justify="center">
           <v-col cols="9">
             <v-layout row class="mb-3">
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <v-btn small text color="grey" class="ml-3" @click="sort('todoTitle')" v-on="on">
+                  <v-btn
+                    small
+                    text
+                    color="grey"
+                    class="ml-3"
+                    @click="sort('todoTitle')"
+                    v-on="on"
+                  >
                     <v-icon left small>mdi-folder</v-icon>
                     <span class="caption text-lowercase">By project name</span>
                   </v-btn>
@@ -17,7 +31,13 @@
               </v-tooltip>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <v-btn small text color="grey" @click="sort('person')" v-on="on">
+                  <v-btn
+                    small
+                    text
+                    color="grey"
+                    @click="sort('person')"
+                    v-on="on"
+                  >
                     <v-icon left small>mdi-account</v-icon>
                     <span class="caption text-lowercase">By Person</span>
                   </v-btn>
@@ -35,7 +55,13 @@
               </v-tooltip>
               <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <v-btn small text color="grey" @click="sort('status')" v-on="on">
+                  <v-btn
+                    small
+                    text
+                    color="grey"
+                    @click="sort('status')"
+                    v-on="on"
+                  >
                     <v-icon left small>mdi-check</v-icon>
                     <span class="caption text-lowercase">By Status</span>
                   </v-btn>
@@ -44,8 +70,16 @@
               </v-tooltip>
               <v-spacer></v-spacer>
             </v-layout>
-            <v-card flat v-for="project in newProjects" :key="project.todoTitle">
-              <v-layout @click="project.show = !project.show" wrap :class="`pa-3 project ${project.status}`">
+            <v-card
+              flat
+              v-for="project in newProjects"
+              :key="project.todoTitle"
+            >
+              <v-layout
+                @click="project.show = !project.show"
+                wrap
+                :class="`pa-3 project ${project.status}`"
+              >
                 <v-flex xs12 md6 xl6>
                   <div class="caption grey--text">Project Title</div>
                   <div>{{ project.todoTitle }}</div>
@@ -60,12 +94,21 @@
                 </v-flex>
                 <v-flex xs2 sm4 md2 xl1>
                   <div class="text-right">
-                    <v-chip small :color="`${project.status}`" :class="`v-chip--active white--text caption my-2`">
-                      {{ project.status }}</v-chip>
+                    <v-chip
+                      small
+                      :color="`${project.status}`"
+                      :class="`v-chip--active white--text caption my-2`"
+                    >
+                      {{ project.status }}</v-chip
+                    >
                   </div>
                 </v-flex>
                 <v-flex class="d-flex flex-row-reverse" xs2 sm4 md2 xl1>
-                  <v-speed-dial v-if="toggleUserSignin" @click.native.stop direction="right">
+                  <v-speed-dial
+                    v-if="toggleUserSignin"
+                    @click.native.stop
+                    direction="right"
+                  >
                     <template v-slot:activator>
                       <v-btn fab text left small color="grey">
                         <v-icon small>mdi-delete</v-icon>
@@ -74,11 +117,21 @@
                     <v-btn fab dark small text color="grey">
                       <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
-                    <v-btn @click="deleteTodoPost(project._id)" fab dark small text color="grey">
+                    <v-btn
+                      @click="deleteTodoPost(project._id)"
+                      fab
+                      dark
+                      small
+                      text
+                      color="grey"
+                    >
                       <v-icon>mdi-check-bold</v-icon>
                     </v-btn>
                   </v-speed-dial>
-                  <todoPopupEdit v-if="toggleUserSignin" v-bind:inputId="project._id" />
+                  <todoPopupEdit
+                    v-if="toggleUserSignin"
+                    v-bind:inputId="project._id"
+                  />
                 </v-flex>
               </v-layout>
               <v-divider></v-divider>
@@ -97,106 +150,108 @@
 </template>
 
 <script>
-  import todoPopupEdit from '../todoComponents/todoPopupEdit'
-  import format from 'date-fns/format'
-  import parseISO from 'date-fns/parseISO'
-  import Endpoints from '../../data/Endpoints'
-  import ImageLinks from '../../data/ImageLinks'
+import todoPopupEdit from "../todoComponents/todoPopupEdit";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
+import Endpoints from "../../data/Endpoints";
+import ImageLinks from "../../data/ImageLinks";
 
-  export default {
-    name: 'dashboard',
-    components: {
-      todoPopupEdit,
-    },
+export default {
+  name: "dashboard",
+  components: {
+    todoPopupEdit,
+  },
 
-    data() {
-      return {
-        siteLogo: ImageLinks.images.Logo,
-        searchToggle: true,
-        newProjects: [],
-        projects: [],
-        snackbarEdited: false,
-        postDeleted: false,
-        toggleUserSignin: false,
-      }
-    },
-    methods: {
-      async deleteTodoPost(id) {
-        await this.$http.delete(Endpoints.todoSingleItemDelete + id, {
-          headers: {
-            'token': localStorage.getItem('token')
-          }
-        })
-        location.reload();
-      },
-      addShow() {
-        this.newProjects = this.projects.map(projects => ({
-          ...projects,
-          show: false
-        }));
-      },
-      sort(prop) {
-        if (this.searchToggle) {
-          this.newProjects.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
-          this.searchToggle = !this.searchToggle
-        } else {
-          this.newProjects.sort((a, b) => b[prop] < a[prop] ? -1 : 1)
-          this.searchToggle = !this.searchToggle
-        }
-      }
-    },
-    async created() {
-      let response = await this.$http.get(Endpoints.todoItemGet)
-      this.projects = response.body;
-      this.projects.forEach(element => {
-        element.newDate = element.due ? format(parseISO(element.due), 'do MMM yyyy') : ''
-      });
-      this.addShow()
-      let responseToken = await this.$http.get(Endpoints.validateToken, {
+  data() {
+    return {
+      newProjects: [],
+      projects: [],
+      siteLogo: ImageLinks.images.Logo,
+      searchToggle: true,
+      snackbarEdited: false,
+      postDeleted: false,
+      toggleUserSignin: false,
+    };
+  },
+  methods: {
+    async deleteTodoPost(id) {
+      await this.$http.delete(Endpoints.todoSingleItemDelete + id, {
         headers: {
-          'token': localStorage.getItem('token')
-        }
+          token: localStorage.getItem("token"),
+        },
       });
-      if (responseToken.status === 200) {
-        this.toggleUserSignin = true
-      }
-
-      // this.addShow()
-      // this.$http.get(Endpoints.validateToken, {
-      //   headers: {
-      //     'token': localStorage.getItem('token')
-      //   }
-      // }).then(response => {
-      //   if (response.status === 200) {
-      //     this.toggleUserSignin = true
-      //   }
-      // });
+      location.reload();
     },
-  }
+    addShow() {
+      this.newProjects = this.projects.map((projects) => ({
+        ...projects,
+        show: false,
+      }));
+    },
+    sort(prop) {
+      if (this.searchToggle) {
+        this.newProjects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
+        this.searchToggle = !this.searchToggle;
+      } else {
+        this.newProjects.sort((a, b) => (b[prop] < a[prop] ? -1 : 1));
+        this.searchToggle = !this.searchToggle;
+      }
+    },
+  },
+  async created() {
+    let response = await this.$http.get(Endpoints.todoItemGet);
+    this.projects = response.body;
+    this.projects.forEach((element) => {
+      element.newDate = element.due
+        ? format(parseISO(element.due), "do MMM yyyy")
+        : "";
+    });
+    this.addShow();
+    let responseToken = await this.$http.get(Endpoints.validateToken, {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    });
+    if (responseToken.status === 200) {
+      this.toggleUserSignin = true;
+    }
+
+    // this.addShow()
+    // this.$http.get(Endpoints.validateToken, {
+    //   headers: {
+    //     'token': localStorage.getItem('token')
+    //   }
+    // }).then(response => {
+    //   if (response.status === 200) {
+    //     this.toggleUserSignin = true
+    //   }
+    // });
+  },
+};
 </script>
 
 <style>
-  .project.complete {
-    border-left: 4px solid #3CD1C2;
-  }
+.project.complete {
+  border-left: 4px solid #3cd1c2;
+}
 
-  .project.ongoing {
-    border-left: 4px solid orange
-  }
+.project.ongoing {
+  border-left: 4px solid orange;
+}
 
-  .project.overdue {
-    border-left: 4px solid tomato;
-  }
+.project.overdue {
+  border-left: 4px solid tomato;
+}
 
-  .v-chip.complete {
-    background: #3CD1C2;
-  }
+.v-chip.complete {
+  background: #3cd1c2;
+}
 
-  .v-chip.ongoing {
-    background: orange
-  }
+.v-chip.ongoing {
+  background: orange;
+}
 
-  .v-chip.overdue {
-    background: tomato;
-  }
+.v-chip.overdue {
+  background: tomato;
+}
 </style>

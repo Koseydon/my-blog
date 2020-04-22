@@ -9,33 +9,33 @@
 </template>
 
 <script>
-  import navbar from './components/navbar';
+import navbar from "./components/navbar";
 
-  export default {
-    name: 'App',
+export default {
+  name: "App",
 
-    components: {
-      navbar
+  components: {
+    navbar,
+  },
+
+  watch: {
+    $route(to) {
+      document.title = to.meta.title || "DreamForge";
     },
+  },
 
-    watch: {
-      '$route'(to) {
-        document.title = to.meta.title || 'DreamForge'
-      }
-    },
-
-    data: () => ({
-      //
-    }),
-  };
+  data: () => ({
+    //
+  }),
+};
 </script>
 
 <style>
-  #app {
-    background-color: #f4f8fb;
-    background-image: url(/backend/background/forge-background.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 100% 70%;
-  }
+#app {
+  background-color: #f4f8fb;
+  background-image: url(/backend/background/forge-background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 100% 70%;
+}
 </style>
