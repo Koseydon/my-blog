@@ -1,4 +1,3 @@
-//Endpoints
 export default {
   links: [
     {

@@ -81,7 +81,7 @@ import Endpoints from "../data/Endpoints";
 import signupPopup from "./signupPopup";
 import loginPopup from "./loginPopup";
 import todoPopupAdd from "../components/todoComponents/todoPopupAdd";
-import navbarLinks from "../data/navbarLinks";
+import navbarLinks from "../data/NavbarLinks";
 import { bus } from "../main";
 
 export default {
