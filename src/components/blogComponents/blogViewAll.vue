@@ -1,20 +1,22 @@
 <template>
   <v-content>
-    <v-img
-      width="600px"
-      height="200px"
-      color="grey"
-      tile
-      class="mx-auto mt-12"
-      :src="siteLogo"
-    ></v-img>
+    <siteLogo />
     <v-container>
       <v-row justify="center">
         <v-col class="d-flex" cols="9">
-          <v-layout class="mb-n5 me-5">
+          <v-layout id="layout" class="mb-n5 me-5">
             <v-row>
-              <v-col class="d-flex" lg="6" cols="12">
-                <v-tooltip v-for="n in sortItems.length" :key="n" top>
+              <v-col
+                v-for="n in sortItems.length"
+                :key="n"
+                id="sort-buttons"
+                class="d-flex"
+                sm="3"
+                md="2"
+                xl="1"
+                cols="12"
+              >
+                <v-tooltip top>
                   <template v-slot:activator="{ on }">
                     <v-btn
                       small
@@ -35,7 +37,8 @@
                   <span>{{ sortItems[n - 1].sortTooltip }}</span>
                 </v-tooltip>
               </v-col>
-              <v-col class="d-flex flex-column" lg="6" cols="12">
+              <v-spacer></v-spacer>
+              <v-col class="d-flex flex-column" md="6" cols="12">
                 <v-text-field
                   class="mt-n2"
                   solo-inverted
@@ -59,49 +62,7 @@
           v-for="(item, i) in filteredPosts"
           :key="i"
         >
-          <v-hover v-slot:default="{ hover }">
-            <v-card
-              v-bind:to="'/' + item._id"
-              :elevation="hover ? 12 : 2"
-              shaped
-              class="mx-auto"
-              width="1280px"
-            >
-              <v-row no-gutters class="mt-0">
-                <v-col class="d-flex" sm="6" md="4">
-                  <v-img
-                    class="white--text align-end"
-                    height="200px"
-                    min-height="212px"
-                    :src="item.image"
-                  >
-                  </v-img>
-                </v-col>
-                <v-col class="d-flex flex-column" sm="6" md="8">
-                  <v-card-subtitle id="itemCategory" class="pb-0"
-                    >{{ item.blogCategory }}
-                  </v-card-subtitle>
-                  <v-card-title id="itemTitle" class="py-0">{{
-                    item.blogTitle
-                  }}</v-card-title>
-                  <v-card-text
-                    id="itemSubtitle"
-                    v-text="item.blogSubTitle"
-                    class="text--primary pb-0"
-                  >
-                  </v-card-text>
-                  <v-spacer></v-spacer>
-                  <v-card-actions>
-                    <v-avatar size="30">
-                      <v-img :src="item.avatar"></v-img>
-                    </v-avatar>
-                    <v-spacer></v-spacer>
-                    <v-card-subtitle v-text="item.newDate"> </v-card-subtitle>
-                  </v-card-actions>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-hover>
+          <blogSingleCard :item="item" />
         </v-col>
       </v-row>
     </v-container>
@@ -109,18 +70,31 @@
 </template>
 
 <script>
-import ImageLinks from "../../data/ImageLinks";
 import Endpoints from "../../data/Endpoints";
-import { sortKeyword } from "../../data/Funcs";
+import SortItems from "../../data/SortItems";
+import { sortBlogKeyword } from "../../data/Funcs";
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 
 export default {
   name: "blog",
 
+  data: () => ({
+    sortItems: [],
+    fab: true,
+    searchToggle: false,
+    search: "",
+    items: [],
+  }),
+
+  components: {
+    blogSingleCard: () => import("../cards/blogSingleCard"),
+    siteLogo: () => import("../siteLogo"),
+  },
+
   methods: {
     sort(prop) {
-      let keyword = sortKeyword(prop);
+      let keyword = sortBlogKeyword(prop);
       if (this.searchToggle) {
         this.items.sort((a, b) => (a[keyword] < b[keyword] ? -1 : 1));
         this.searchToggle = !this.searchToggle;
@@ -140,6 +114,7 @@ export default {
   },
 
   async created() {
+    this.sortItems = SortItems.blog;
     let response = await this.$http.get(Endpoints.blogItemGet);
     this.items = response.body;
     this.items.forEach((element) => {
@@ -149,51 +124,21 @@ export default {
     });
     this.items.reverse();
   },
-
-  data: () => ({
-    sortItems: [
-      {
-        sortIcon: "mdi-folder",
-        sortType: "by post title",
-        sortTooltip: "sort by post title",
-      },
-      {
-        sortIcon: "mdi-account",
-        sortType: "by author",
-        sortTooltip: "sort by author",
-      },
-      {
-        sortIcon: "mdi-calendar-range",
-        sortType: "by date",
-        sortTooltip: "sort by date",
-      },
-    ],
-    siteLogo: ImageLinks.images.Logo,
-    fab: true,
-    searchToggle: false,
-    search: "",
-    items: [],
-  }),
 };
 </script>
 
 <style>
-#itemTitle {
-  font-size: 36px;
-  line-height: 1;
-}
-
-#itemSubtitle {
-  font-size: 20px;
-  line-height: 1;
-}
-
 @media screen and (max-width: 960px) {
-  #itemTitle {
-    font-size: 24px;
+  #site-logo {
+    margin-bottom: -50px;
   }
-  #itemSubtitle {
-    font-size: 16px;
+}
+@media screen and (max-width: 600px) {
+  #sort-buttons {
+    margin: -8px;
+  }
+  #site-logo {
+    margin-bottom: -50px;
   }
 }
 </style>

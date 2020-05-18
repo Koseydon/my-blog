@@ -1,13 +1,6 @@
 <template>
   <v-content>
-    <v-img
-      width="600px"
-      height="200px"
-      color="grey"
-      tile
-      class="mx-auto mt-12"
-      :src="siteLogo"
-    ></v-img>
+    <siteLogo />
     <v-container>
       <v-card>
         <v-row justify="center">
@@ -104,6 +97,7 @@ import {
 export default {
   components: {
     TiptapVuetify,
+    siteLogo: () => import("../siteLogo"),
   },
   data() {
     return {

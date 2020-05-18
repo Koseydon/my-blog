@@ -1,13 +1,6 @@
 <template>
   <v-content>
-    <v-img
-      width="600px"
-      height="200px"
-      color="grey"
-      tile
-      class="mx-auto mt-12"
-      :src="siteLogo"
-    ></v-img>
+    <siteLogo />
     <v-container>
       <v-card>
         <v-row justify="center">
@@ -99,6 +92,7 @@ import {
 export default {
   components: {
     TiptapVuetify,
+    siteLogo: () => import("../siteLogo"),
   },
   data() {
     return {
@@ -205,6 +199,7 @@ export default {
     this.author = response.body.author;
     this.avatar = response.body.avatar;
     this.image = response.body.image;
+    this.defaultImage = response.body.image;
     let responseToken = await this.$http.get(Endpoints.validateToken, {
       headers: {
         token: localStorage.getItem("token"),

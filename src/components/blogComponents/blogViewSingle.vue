@@ -1,34 +1,36 @@
 <template>
   <v-container>
-    <v-row justify="center">
-      <v-card outlined flat width="1000px">
-        <v-col>
-          <v-card-title>
-            <span class="blogTitle">
-              {{ item.blogTitle }}
-            </span>
-          </v-card-title>
-          <v-card-subtitle>
-            <span class="blogSubtitle">
-              {{ item.blogSubTitle }}
-            </span>
-          </v-card-subtitle>
-        </v-col>
+    <v-row class="mt-10" justify="center">
+      <v-card color="rgb(255, 255, 255, 0.5)" outlined flat width="1000px">
         <v-row justify="center">
           <v-col cols="9">
-            <v-card-actions>
-              <v-list-item class="grow">
-                <v-list-item-avatar color="grey darken-3">
-                  <v-img class="elevation-6" :src="item.avatar"> </v-img>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title> {{ item.author }} </v-list-item-title>
-                </v-list-item-content>
-                <v-row align="center" justify="end">
+            <v-card-title>
+              <span class="blogTitle">
+                {{ item.blogTitle }}
+              </span>
+            </v-card-title>
+            <v-card-subtitle>
+              <span class="blogSubtitle">
+                {{ item.blogSubTitle }}
+              </span>
+            </v-card-subtitle>
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="12" sm="9">
+            <v-list-item class="grow">
+              <v-col cols="12" sm="12">
+                <v-row>
+                  <v-list-item-avatar color="grey darken-3">
+                    <v-img class="elevation-6" :src="item.avatar"></v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title> {{ item.author }} </v-list-item-title>
+                  </v-list-item-content>
                   <v-card-subtitle v-text="item.newDate"> </v-card-subtitle>
                 </v-row>
-              </v-list-item>
-            </v-card-actions>
+              </v-col>
+            </v-list-item>
           </v-col>
         </v-row>
         <v-col>
@@ -40,7 +42,7 @@
           ></v-img>
         </v-col>
         <v-row justify="center">
-          <v-col cols="8">
+          <v-col md="8" cols="10">
             <v-card-subtitle>{{ item.blogCategory }}</v-card-subtitle>
             <v-card-text>
               <span v-html="item.blogText" class="blogText"></span>
@@ -101,6 +103,7 @@ export default {
   async created() {
     let response = await this.$http.get(Endpoints.blogSingleView + this.id);
     this.item = response.body;
+    console.log(this.item);
     this.item.newDate = this.item.date
       ? format(parseISO(this.item.date), "do MMM yyyy")
       : "";
@@ -136,21 +139,31 @@ export default {
 
 <style>
 .blogTitle {
-  font-size: 5.5rem;
+  font-size: 48px;
   line-height: 1;
   text-align: center;
   display: flex;
   padding-bottom: 20px;
+  word-break: normal;
 }
 
 .blogSubtitle {
+  font-size: 32px;
   line-height: 1;
   text-align: center;
-  font-size: 32px;
   display: flex;
 }
 
 .blogText {
   font-size: 20px;
+  text-align: justify;
+}
+@media screen and (max-width: 960px) {
+  .blogTitle {
+    font-size: 32px;
+  }
+  .blogSubtitle {
+    font-size: 24px;
+  }
 }
 </style>

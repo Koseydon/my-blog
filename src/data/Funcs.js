@@ -32,7 +32,7 @@ export function successCase(statusType) {
 }
 
 // blogViewAll component sort functyion switch case
-export function sortKeyword(prop) {
+export function sortBlogKeyword(prop) {
   switch (prop) {
     case 1:
       return "blogTitle";
@@ -40,5 +40,19 @@ export function sortKeyword(prop) {
       return "author";
     case 3:
       return "date";
+  }
+}
+
+// todoViewAll component sort functyion switch case
+export function sortTodoKeyword(prop) {
+  switch (prop) {
+    case 1:
+      return "todoTitle";
+    case 2:
+      return "person";
+    case 3:
+      return "newDate";
+    case 4:
+      return "status";
   }
 }
