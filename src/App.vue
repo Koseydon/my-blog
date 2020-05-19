@@ -33,7 +33,7 @@ export default {
 <style>
 #app {
   background-color: #f4f8fb;
-  background-image: url(http://localhost:3000/backend/background/forge-background.png);
+  background-image: url(/backend/background/forge-background.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 100% 70%;
