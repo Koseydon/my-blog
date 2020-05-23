@@ -4,6 +4,5 @@ stages:
 build:
   stage: build
   script:
-    - git pull
     - npm install
     - npm run build
