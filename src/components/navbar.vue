@@ -8,7 +8,7 @@
       ></v-app-bar-nav-icon>
       <v-toolbar-title class="grey--text">
         <span class="text-lowercase">dream</span>
-        <span class="font-weight-light text-uppercase">Forge</span>
+        <span class="font-weight-light text-uppercase">Forge 2</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-speed-dial v-show="!toggleUserSignin" direction="left">
