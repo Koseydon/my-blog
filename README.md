@@ -1,6 +1,8 @@
 # my-blog
 My website with vue.js
 
+## GitLab Mirror Added
+
 ## Project setup
 ```
 npm install
